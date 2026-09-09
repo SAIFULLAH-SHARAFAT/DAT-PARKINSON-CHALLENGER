@@ -1,0 +1,47 @@
+{
+  "as_of": "2026-09-09",
+  "competition": {
+    "name": "DaT Parkinson's Challenge",
+    "url": "https://www.drivendata.org/competitions/311/dat-parkinsons-challenge/",
+    "leaderboard_url": "https://www.drivendata.org/competitions/311/dat-parkinsons-challenge/leaderboard/"
+  },
+  "public_leaderboard_snapshot": {
+    "source": "project_owner_reported_snapshot",
+    "participant": "MD_SHAIFULLAH_SHARAFAT",
+    "profile_url": "https://www.drivendata.org/users/MD_SHAIFULLAH_SHARAFAT/",
+    "rank": 148,
+    "log_loss": 0.322,
+    "auroc": 0.9297,
+    "associated_project_phase": 56
+  },
+  "development_comparator": {
+    "phase": 43,
+    "n": 1362,
+    "log_loss": 0.29016628416289664,
+    "auroc": 0.9464742438589044,
+    "brier": 0.08906692318612011
+  },
+  "final_experiment": {
+    "phase": "66F",
+    "model": "DINOv2 ViT-S/14 slice-to-volume adaptation",
+    "two_seeds_three_group_folds": true,
+    "log_loss": 0.38134913925000996,
+    "auroc": 0.9196145013658972,
+    "brier": 0.11866750961852184,
+    "log_loss_gain": -0.09118285508711332,
+    "auroc_gain": -0.026859742493007266,
+    "macro_domain_bootstrap_95": [
+      -0.11830042837909419,
+      -0.04320921866804996
+    ],
+    "all_promotion_gates_passed": false,
+    "decision": "reject_phase66f_retain_phase56_stop_model_search"
+  },
+  "claims": {
+    "leaderboard_snapshot_independently_verified_by_release_builder": false,
+    "development_and_leaderboard_populations_are_directly_comparable": false,
+    "phase56_exact_development_numeric_parity_proven": false,
+    "phase56_offline_deployment_integrity_passed": true
+  }
+}
+

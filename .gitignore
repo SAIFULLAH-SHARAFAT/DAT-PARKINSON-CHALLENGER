@@ -1,0 +1,57 @@
+# Private data and medical images
+*.nii
+*.nii.gz
+*.dcm
+*.dicom
+train_labels.csv
+submission.csv
+
+# Predictions, caches, checkpoints, and weights
+*.npy
+*.npz
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.onnx
+*.zip
+
+# Private runtime state and reports
+*_private/
+*_private.*
+private_*/
+checkpoints/
+weights/
+data/
+outputs/
+wandb/
+mlruns/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+config/kaggle.env
+*.pem
+*.key
+
+# Python and notebook state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.virtual_documents/
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+

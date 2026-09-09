@@ -1,0 +1,72 @@
+{
+  "report_form": "abridged_from_sanitized_contract",
+  "phase": "phase66f_fresh_source_consistent_dual_gpu_rerun",
+  "status": "phase66_final_attempt_failed_retain_phase56_stop_model_search",
+  "anchor_phase43_development_comparator": {
+    "log_loss": 0.29016628416289664,
+    "auroc": 0.9464742438589044,
+    "mean_probability": 0.5500570231688339,
+    "brier": 0.08906692318612011
+  },
+  "primary_two_seed_foundation_expert": {
+    "log_loss": 0.38134913925000996,
+    "auroc": 0.9196145013658972,
+    "mean_probability": 0.5883036869254716,
+    "brier": 0.11866750961852184
+  },
+  "individual_seed_metrics": [
+    {
+      "log_loss": 0.42127978511970365,
+      "auroc": 0.9097604510181648,
+      "mean_probability": 0.5932155916644162,
+      "brier": 0.13096303356990405
+    },
+    {
+      "log_loss": 0.4005343024301654,
+      "auroc": 0.9113853789140302,
+      "mean_probability": 0.5833917821865271,
+      "brier": 0.12428864647039313
+    }
+  ],
+  "log_loss_gain": -0.09118285508711332,
+  "auroc_gain": -0.026859742493007266,
+  "fold_log_loss_gains": [
+    -0.1330724916739916,
+    -0.07559168954479774,
+    -0.06318379767378075
+  ],
+  "macro_domain_bootstrap_95": [
+    -0.11830042837909419,
+    -0.04320921866804996
+  ],
+  "gates": {
+    "minimum_log_loss_gain": false,
+    "minimum_auroc_gain": false,
+    "brier_improves": false,
+    "every_seed_improves_log_loss": false,
+    "every_seed_improves_auroc": false,
+    "fold_regret_within_bound": false,
+    "stress_domain_regret_within_bound": false,
+    "macro_domain_bootstrap_lower_positive": false
+  },
+  "fresh_fit_count": 6,
+  "two_seeds_three_original_group_folds": true,
+  "fits_launched_at_most_two_in_parallel": true,
+  "parallelism": "one_independent_fold_seed_fit_per_gpu",
+  "ddp_used": false,
+  "old_phase66_checkpoints_or_predictions_used": false,
+  "fresh_implementation_consistent_across_all_six_fits": true,
+  "pretrained_weights": {
+    "tensor_fingerprint_verified": true,
+    "input_was_wrapped": true,
+    "wrapper_depth": 1,
+    "restricted_loader_used": true,
+    "strict_model_load_passed": true
+  },
+  "phase56_archive_unchanged": true,
+  "test_data_read": false,
+  "test_time_adaptation": false,
+  "case_level_values_private_paths_uids_predictions_or_weights_exported": false,
+  "submission_archive_created": false,
+  "source_contract_sha256": "b992ed39da91f68cf52893bd07f0e492cabd8387c5f50d76b861b92c41b7164d"
+}

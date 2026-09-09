@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+title: "DaT Parkinson's Challenge public solution archive"
+message: "If you use this code or experiment ledger, please cite this repository and the original competition."
+type: software
+authors:
+  - name: "MD_SHAIFULLAH_SHARAFAT"
+date-released: 2026-09-09
+license: MIT
+repository-code: "https://github.com/YOUR_GITHUB_USER/dat-parkinsons-challenge-solution"
+url: "https://www.drivendata.org/competitions/311/dat-parkinsons-challenge/"
+keywords:
+  - DaT-SPECT
+  - Parkinson's disease
+  - medical imaging
+  - domain generalization
+  - probabilistic classification
+
