@@ -89,27 +89,6 @@ python experiments/phase66f_fresh_dual_gpu_final.py
 
 Phase66F is included for reproducibility of the negative result, not as a recommended new run. The evidence-based next step is new independent validation evidence, not more tuning on the same 1,362-case development population.
 
-## Publication and competition boundaries
-
-This repository is intended as a **public** code release. Do not publish or redistribute the challenge dataset or any derived case-level artifact. During an active competition, consult the current rules before collaborating or sharing code privately. Each test case must remain independent at inference time; no test-set fitting, pseudo-labeling, transductive graphs, or cross-test adaptation is used here.
-
-The project code is released under the MIT License. Third-party data, pretrained weights, and upstream implementations keep their own terms and are not relicensed or redistributed here. See `docs/ASSETS_AND_LICENSES.md`.
-
-## Create and push your own GitHub repository
-
-After unzipping, the delivered archive already contains an initial local commit. Add your remote and push:
-
-```bash
-git config user.name "YOUR_GITHUB_NAME"
-git config user.email "YOUR_GITHUB_NOREPLY_EMAIL"
-git commit --amend --reset-author --no-edit
-git remote add origin https://github.com/YOUR_GITHUB_USER/dat-parkinsons-challenge-solution.git
-git branch -M main
-git push -u origin main
-```
-
-Run `python scripts/verify_release.py` before every public push.
-
 ## Citation
 
 Use `CITATION.cff` for repository citation. Challenge organizers, data providers, and third-party methods should be cited separately according to their official pages and licenses.
