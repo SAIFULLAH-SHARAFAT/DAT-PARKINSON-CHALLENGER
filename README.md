@@ -10,7 +10,7 @@ Snapshot supplied by the project owner on **9 September 2026**. Use the linked l
 
 | Rank | Participant | Log loss ↓ | AUROC ↑ |
 |---:|---|---:|---:|
-| #148 | [**MD_SHAIFULLAH_SHARAFAT**](https://www.drivendata.org/users/MD_SHAIFULLAH_SHARAFAT/ "View MD_SHAIFULLAH_SHARAFAT's profile") | **0.3220** | **0.9297** |
+| #150 | [**MD_SHAIFULLAH_SHARAFAT**](https://www.drivendata.org/users/MD_SHAIFULLAH_SHARAFAT/ "View MD_SHAIFULLAH_SHARAFAT's profile") | **0.3143** | **0.9297** |
 
 [View the DaT Parkinson’s Challenge leaderboard](https://www.drivendata.org/competitions/311/dat-parkinsons-challenge/leaderboard/)
 
