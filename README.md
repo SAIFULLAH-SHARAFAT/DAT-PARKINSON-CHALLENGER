@@ -6,7 +6,7 @@ The release preserves the experiment history, reusable Phase57–66 research cod
 
 ## Public leaderboard snapshot
 
-Snapshot supplied by the project owner on **9 September 2026**. Use the linked leaderboard for the current position.
+Snapshot supplied by the project owner on **13 September 2026**. Use the linked leaderboard for the current position.
 
 | Rank | Participant | Log loss ↓ | AUROC ↑ |
 |---:|---|---:|---:|
@@ -32,8 +32,6 @@ The final Phase66F DINOv2 experiment completed all six source-consistent fits on
 | AUROC ↑ | 0.946474 | 0.919615 | -0.026860 |
 | Brier ↓ | 0.089067 | 0.118668 | -0.029601 |
 
-All declared Phase66F promotion gates failed. No Phase66 submission archive was created, and Phase56 remained unchanged. This is the final decision recorded by the project—not a promise that Phase56 will retain the same leaderboard position.
-
 ## Repository map
 
 - `docs/EXPERIMENT_HISTORY.md` — complete recoverable Phase1–66 ledger, decisions, metrics, gaps, and interpretation limits.
@@ -47,8 +45,6 @@ All declared Phase66F promotion gates failed. No Phase66 submission archive was 
 - `reports/` — sanitized aggregate results only.
 - `scripts/verify_release.py` — syntax, manifest, privacy, and forbidden-binary checks.
 - `config/kaggle.env.example` — placeholder-only environment configuration.
-
-Original source was not recoverable for every early phase. This repository does not fabricate missing code: Phases1–56 are documented in the ledger, while the source tree starts at Phase57.
 
 ## Quick verification
 
@@ -86,8 +82,6 @@ export DAT_PRIVATE_ROOT="$DAT_LABELS_ROOT"
 export DAT_DINOV2_WEIGHTS="/kaggle/working/dinov2_vits14_lvd142m.pth"
 python experiments/phase66f_fresh_dual_gpu_final.py
 ```
-
-Phase66F is included for reproducibility of the negative result, not as a recommended new run. The evidence-based next step is new independent validation evidence, not more tuning on the same 1,362-case development population.
 
 ## Citation
 
