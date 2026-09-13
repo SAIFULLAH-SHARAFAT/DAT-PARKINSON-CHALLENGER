@@ -1,6 +1,6 @@
 {
   "schema": "dat-parkinsons-public-release-manifest-v1",
-  "generated_for_release_date": "2026-09-09",
+  "generated_for_release_date": "2026-09-13",
   "self_excluded": true,
   "files": [
     {
@@ -10,8 +10,8 @@
     },
     {
       "path": "CITATION.cff",
-      "bytes": 582,
-      "sha256": "29fef80cdfdcae389f04dec3794bf1591c713a04ead9858dbcc96ce85dbd9df5"
+      "bytes": 581,
+      "sha256": "9ca339009bafd4a5e514a3bf3af3e8963f9f2160e6d08cb82c3b7777501efd79"
     },
     {
       "path": "LICENSE",
@@ -20,8 +20,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 6846,
-      "sha256": "80e4c50501122f7e071e8507c61677eb7145772619334241d74eef2a7525c54d"
+      "bytes": 7756,
+      "sha256": "280e1f44eb3b34c50bbd0400849ab0f6a105ae238e3d77cd438b2f7083d1fd3f"
     },
     {
       "path": "config/kaggle.env.example",
@@ -40,8 +40,8 @@
     },
     {
       "path": "docs/EXPERIMENT_HISTORY.md",
-      "bytes": 56710,
-      "sha256": "65f8702f8e01029a6262186480cbfcfddf493b7e15c92b66f647c19d7fbd63c7"
+      "bytes": 57786,
+      "sha256": "64d1c7729090d8376c7d788b73364f307e5d3d3e9da050318225ded49918e478"
     },
     {
       "path": "docs/PHASE66_RESEARCH.md",
@@ -50,8 +50,8 @@
     },
     {
       "path": "docs/PUBLIC_RELEASE_CHANGES.md",
-      "bytes": 1406,
-      "sha256": "9c6dd53d776a5e360a769ce05a94ed7d83dc541d0876152d41c4cc3e81fd5e73"
+      "bytes": 1567,
+      "sha256": "55ad7bdc8e17125a9fd63d9acd4cd4171218cbbe852bed4468d7ce57992a1ded"
     },
     {
       "path": "docs/REPRODUCIBILITY.md",
@@ -245,8 +245,8 @@
     },
     {
       "path": "reports/results_summary.json",
-      "bytes": 1598,
-      "sha256": "3d8c874f5949de2931043b55c0179026dc20f54e26dab27f55da009c811600f8"
+      "bytes": 2663,
+      "sha256": "773b0ed244dc3ea45842282d8bb84a232feeec89a1ff983746511f98012cbcb2"
     },
     {
       "path": "requirements.txt",
@@ -256,7 +256,7 @@
     {
       "path": "scripts/update_manifest.py",
       "bytes": 1127,
-      "sha256": "e37f1bcd36c17e4d8d04b98665cc85a9920689fd5b201d2be7136787915ec24c"
+      "sha256": "37e4f18e5d13600a1e88ecd59b70352acfe729d5944ac84ed38dd311b8dca212"
     },
     {
       "path": "scripts/verify_release.py",

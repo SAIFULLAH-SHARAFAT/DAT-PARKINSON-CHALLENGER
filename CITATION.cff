@@ -4,7 +4,7 @@ message: "If you use this code or experiment ledger, please cite this repository
 type: software
 authors:
   - name: "MD_SHAIFULLAH_SHARAFAT"
-date-released: 2026-09-09
+date-released: 2026-09-13
 license: MIT
 repository-code: "https://github.com/YOUR_GITHUB_USER/dat-parkinsons-challenge-solution"
 url: "https://www.drivendata.org/competitions/311/dat-parkinsons-challenge/"
@@ -14,4 +14,3 @@ keywords:
   - medical imaging
   - domain generalization
   - probabilistic classification
-

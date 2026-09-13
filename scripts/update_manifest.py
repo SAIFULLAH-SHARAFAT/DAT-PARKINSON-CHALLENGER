@@ -32,7 +32,7 @@ for path in sorted(ROOT.rglob("*")):
 
 payload = {
     "schema": "dat-parkinsons-public-release-manifest-v1",
-    "generated_for_release_date": "2026-09-09",
+    "generated_for_release_date": "2026-09-13",
     "self_excluded": True,
     "files": files,
 }

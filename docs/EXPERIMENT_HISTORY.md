@@ -1,6 +1,6 @@
 # DaT Parkinson’s Challenge — Project handoff, Phases 1–66
 
-Updated 9 September 2026. Covers all experiments and engineering steps recoverable from the supplied history, with explicit gaps. This is a reconstruction from historical summaries, source code and sanitized reports, not a fresh reanalysis of private scans or predictions.
+Updated 13 September 2026. Covers all experiments and engineering steps recoverable from the supplied history, with explicit gaps. This is a reconstruction from historical summaries, source code and sanitized reports, not a fresh reanalysis of private scans or predictions.
 
 ## Read this first
 
@@ -16,7 +16,8 @@ The existing archive’s offline execution concern was cleared by Phase65A-R4. T
 | Phase12c anatomy model | 0.307616 | 0.938914 | Historical development OOF |
 | Phase43 reconstructed comparator | 0.290166 | 0.946474 | Original 1,362-case development OOF; comparator in recent audits |
 | Phase42 submission | 0.3254 | 0.9251 | Historical public leaderboard |
-| Phase56 submission | 0.3220 | 0.9297 | Historical public leaderboard; retained archive |
+| Phase56 submission | 0.3220 | 0.9297 | Historical public leaderboard; retained model/archive |
+| Phase68R Phase56 temperature 1.30 | 0.3131 | 0.9297 | Best owner-reported public submission; output-only calibration |
 | Phase61 historical-feature blend | 0.285263 | 0.948638 | Attractive development diagnostic; rejected for stability and provenance |
 | Phase65B physics-pretrained blend | 0.295285 | 0.944711 | Development; rejected |
 | Phase65C domain-adversarial blend | 0.285425 | 0.948274 | Development; failed domain bootstrap gate |
@@ -829,6 +830,12 @@ Individual seeds scored 0.421280/0.909760 and 0.400534/0.911385 for log loss/AUR
 **Final Phase66 decision:** reject the DINOv2 adaptation, retain Phase56, create no candidate submission archive, and stop this model-search branch. The negative result is useful evidence that this particular slice-to-volume DINOv2 adaptation did not solve the acquisition-generalization problem under the fixed design; it is not a claim that all pretrained transformers are unsuitable for DaT-SPECT.
 
 The official DINOv2 model table distinguishes standard ViT-S/14 from its register variant. [Official pretrained-model table](https://github.com/facebookresearch/dinov2#pretrained-models), [PyTorch serialization documentation](https://docs.pytorch.org/docs/stable/notes/serialization.html)
+
+## Post-Phase66 public output-calibration probes
+
+After the model-search branch closed, four Phase56 output variants were compared on the public leaderboard. The unchanged output scored 0.3220 log loss, an intercept shift of −0.10 worsened it to 0.3256, temperature 1.15 improved it to 0.3143, and temperature 1.30 improved it further to 0.3131. All retained the reported 0.9297 AUROC because positive-temperature logit scaling is monotonic.
+
+The selected public variant applies `sigmoid(logit(p) / 1.30)` independently to each prediction. It does not retrain the model, fit on test cases, or use cross-case statistics, and the Phase56 archive remains unchanged. Because the temperature was selected after observing public leaderboard scores, this result may overfit the public subset and does not establish private-leaderboard improvement. The predeclared decision is to retain temperature 1.30 and stop further leaderboard calibration probes.
 
 ## What all these experiments have taught us
 

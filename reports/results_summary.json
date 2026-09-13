@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-09",
+  "as_of": "2026-09-13",
   "competition": {
     "name": "DaT Parkinson's Challenge",
     "url": "https://www.drivendata.org/competitions/311/dat-parkinsons-challenge/",
@@ -9,11 +9,51 @@
     "source": "project_owner_reported_snapshot",
     "participant": "MD_SHAIFULLAH_SHARAFAT",
     "profile_url": "https://www.drivendata.org/users/MD_SHAIFULLAH_SHARAFAT/",
-    "rank": 148,
-    "log_loss": 0.322,
+    "rank": 147,
+    "log_loss": 0.3131,
     "auroc": 0.9297,
-    "associated_project_phase": 56
+    "associated_project_phase": "68R",
+    "base_model_phase": 56,
+    "output_transform": {
+      "type": "independent_logit_temperature_scaling",
+      "temperature": 1.3,
+      "intercept": 0.0
+    }
   },
+  "public_calibration_probes": [
+    {
+      "name": "phase56_unchanged_output",
+      "temperature": 1.0,
+      "intercept": 0.0,
+      "log_loss": 0.322,
+      "auroc": 0.9297,
+      "decision": "base_deployment_anchor"
+    },
+    {
+      "name": "phase56_intercept_minus_0p10",
+      "temperature": 1.0,
+      "intercept": -0.1,
+      "log_loss": 0.3256,
+      "auroc": 0.9297,
+      "decision": "rejected"
+    },
+    {
+      "name": "phase56_temperature_1p15",
+      "temperature": 1.15,
+      "intercept": 0.0,
+      "log_loss": 0.3143,
+      "auroc": 0.9297,
+      "decision": "superseded"
+    },
+    {
+      "name": "phase56_temperature_1p30",
+      "temperature": 1.3,
+      "intercept": 0.0,
+      "log_loss": 0.3131,
+      "auroc": 0.9297,
+      "decision": "best_reported_public_submission"
+    }
+  ],
   "development_comparator": {
     "phase": 43,
     "n": 1362,
@@ -39,9 +79,9 @@
   },
   "claims": {
     "leaderboard_snapshot_independently_verified_by_release_builder": false,
+    "public_calibration_results_are_unbiased_private_performance_estimates": false,
     "development_and_leaderboard_populations_are_directly_comparable": false,
     "phase56_exact_development_numeric_parity_proven": false,
     "phase56_offline_deployment_integrity_passed": true
   }
 }
-
