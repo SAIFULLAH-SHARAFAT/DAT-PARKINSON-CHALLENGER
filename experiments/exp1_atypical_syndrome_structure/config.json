@@ -1,0 +1,88 @@
+{
+  "experiment": "exp1_atypical_syndrome_structure",
+  "schema_version": "exp1-v1",
+  "_declared_before_results": "Every threshold below was written before the first run. Do not edit after seeing an outcome; add a new config file instead.",
+  "striatum_window": {
+    "_purpose": "Fractional extent of the 80^3 canonical box searched for striatal uptake. Fractions, never voxel constants, so a change of cache geometry cannot silently move the region.",
+    "lr": [
+      0.2,
+      0.8
+    ],
+    "ap": [
+      0.35,
+      0.8
+    ],
+    "si": [
+      0.4,
+      0.75
+    ]
+  },
+  "descriptor": {
+    "_purpose": "All descriptors are RATIOS normalised by the scan's own reference. No absolute intensity threshold appears anywhere: under a randomised global gain an absolute cut is wrong by the gain factor at training time and exactly right at validation time, which is how a leak gets built by accident.",
+    "reference_quantile": 0.5,
+    "top_fraction": 0.02,
+    "posterior_half": "ap_upper",
+    "epsilon": 1e-08
+  },
+  "stratum": {
+    "_purpose": "Pathological cases are split into asymmetric-typical and symmetric-atypical on the asymmetry index. The threshold is a QUANTILE fitted inside the training partition of each outer fold and applied unchanged to the held-out fold, so no held-out case ever informs its own stratum.",
+    "asymmetry_quantile": 0.4,
+    "minimum_per_stratum": 25,
+    "classes": [
+      "healthy",
+      "asymmetric_typical",
+      "symmetric_atypical"
+    ]
+  },
+  "model": {
+    "input_channels": 1,
+    "channels": [
+      16,
+      32,
+      64
+    ],
+    "blocks_per_stage": [
+      2,
+      2,
+      2
+    ],
+    "projection": 96,
+    "dropout": 0.1,
+    "_note": "blocks_per_stage has one entry per stage in `channels`. The encoder emits projection * len(channels) features, which the heads read from encoder.output_dimension rather than assuming."
+  },
+  "training": {
+    "epochs": 24,
+    "batch_size": 8,
+    "learning_rate": 0.0006,
+    "weight_decay": 0.0001,
+    "warmup_fraction": 0.1,
+    "ema_decay": 0.999,
+    "auxiliary_weight": 0.3,
+    "gradient_clip": 5.0,
+    "amp": true
+  },
+  "seeds": {
+    "_purpose": "Three seeds minimum. The measured seed standard deviation is reported before any comparison is read, and the ship bar below must exceed it.",
+    "values": [
+      681001,
+      681002,
+      681003
+    ]
+  },
+  "matched_null": {
+    "_purpose": "Same architecture, same auxiliary head, same number of auxiliary classes -- but the stratum labels are permuted WITHIN the pathological cases. If the real strata do not beat this, the auxiliary head is buying capacity, not structure.",
+    "enabled": true,
+    "seed": 681099
+  },
+  "ship_bar": {
+    "_purpose": "A gain in the contested tail may not be bought with harm anywhere else.",
+    "minimum_pooled_log_loss_gain": 0.005,
+    "minimum_auroc_gain": 0.0,
+    "minimum_gain_over_matched_null": 0.003,
+    "maximum_stratum_log_loss_regret": 0.002,
+    "maximum_fold_log_loss_regret": 0.002,
+    "require_all_seeds_same_sign": true
+  },
+  "probability_clip": 1e-06,
+  "contract_file": "exp1_atypical_syndrome_contract.json"
+}

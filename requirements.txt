@@ -1,6 +1,9 @@
+# Core: everything in datcore/, experiments/ and scripts/ runs with just these.
+# Install the PyTorch build matching your CUDA version from pytorch.org first;
+# the pin below is an API floor, not a preference for the CPU wheel.
 numpy>=1.26,<3
-pandas>=2.0,<3
-scipy>=1.11,<2
-scikit-learn>=1.3,<2
 torch>=2.4,<3
 
+# Optional, experiment 3 only, and only for the DINOv3 arms. The mandatory
+# scratch control and every synthetic test run without it.
+#   pip install "timm>=1.0"

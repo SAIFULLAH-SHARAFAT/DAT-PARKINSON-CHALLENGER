@@ -3,8 +3,14 @@
 *.nii.gz
 *.dcm
 *.dicom
-train_labels.csv
-submission.csv
+*.ima
+*.nrrd
+*.mha
+*.mhd
+*.img
+*.hdr
+# Any tabular export may carry per-case labels, UIDs or predictions.
+*.csv
 
 # Predictions, caches, checkpoints, and weights
 *.npy
@@ -19,7 +25,24 @@ submission.csv
 *.h5
 *.hdf5
 *.onnx
+*.gguf
+*.pb
+*.tflite
+*.bin
+*.mat
+*.parquet
+*.feather
+*.arrow
+*.db
+*.sqlite
 *.zip
+*.tar
+*.tgz
+*.gz
+*.bz2
+*.xz
+*.7z
+*.rar
 
 # Private runtime state and reports
 *_private/
@@ -36,9 +59,22 @@ mlruns/
 .env
 .env.*
 !.env.example
-config/kaggle.env
+config/local.env
+config/*.env
+!config/*.env.example
+*.env
+kaggle.json
+.kaggle/
+.netrc
+credentials.json
+id_rsa*
+id_ed25519*
 *.pem
 *.key
+*.p12
+*.pfx
+*.jks
+*.ppk
 
 # Python and notebook state
 __pycache__/
@@ -46,6 +82,8 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+# Notebooks are excluded by policy (cell output, execution history, path metadata).
+*.ipynb
 .ipynb_checkpoints/
 .virtual_documents/
 

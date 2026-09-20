@@ -1,0 +1,103 @@
+{
+  "experiment": "exp3_dinov3_projection_expert",
+  "schema_version": "exp3-v1",
+  "_declared_before_results": "Every threshold below was written before the first run. Do not edit after seeing an outcome; add a new config file instead.",
+  "_why_a_projection": "Phase66F applied DINOv2 to an unchanged volume and lost 0.091 log loss. Two top-ten solutions independently measured pretrained extractors on this modality at +0.05 log loss, -0.018 AUROC, and acquisition-conditional collapse across clusters. A ~9 mm point spread function at 2 mm sampling means the volume is roughly twice oversampled, so capacity is not the bottleneck and a raw volume is the wrong input. This experiment gives the foundation model a physically meaningful 2D representation instead, which is the only form in which it has not yet been falsified.",
+  "projection": {
+    "_purpose": "Fixed, zero-parameter reduction of the superior-inferior axis into four physical channels. A learnable version of this collapsed to near rank-1 in a published solution, so the fixed form is not a simplification, it is the measured optimum.",
+    "channels": [
+      "peak",
+      "mean",
+      "anisotropy_times_uptake",
+      "normalised_displacement_tail"
+    ],
+    "tau_slope": 4.09,
+    "tau_intercept": 1.259,
+    "tau_minimum": 0.5,
+    "anisotropy_window": 15,
+    "ndt_fraction": 0.5,
+    "ndt_erode_steps": 20,
+    "output_size": 224,
+    "hemisphere_views": true,
+    "reference_quantile": 0.999,
+    "reference_fraction": 0.15,
+    "_reference": "Each scan is divided by the mean of its own voxels above 0.15 x its 99.9th percentile before projection. Relative end to end, so the 0.46x-2.3x global gain the gamma augmentation applies cancels exactly and tau measures the patient, not the camera."
+  },
+  "augmentation": {
+    "_purpose": "Physics-consistent, exaggerated in amplitude but never in form. Every single removal of an equivalent chain lost in a published ablation.",
+    "flip_lr_probability": 0.5,
+    "rotation_degrees": 31.7,
+    "zoom": 0.15,
+    "translate": 0.06,
+    "poisson_probability": 0.3,
+    "poisson_counts": [
+      25,
+      175
+    ],
+    "gamma_probability": 0.3,
+    "gamma_range": [
+      0.7,
+      1.3
+    ],
+    "_no_absolute_threshold": "The gamma operation is a 0.46x-2.3x GLOBAL GAIN on mean-normalised input. Any absolute intensity cut is therefore wrong by up to 2.3x during training and exactly right at validation. Smooth reductions survive this; thresholds do not."
+  },
+  "arms": {
+    "_purpose": "Three arms, one harness, identical input. The scratch control is the point: it is the matched null that says whether DINOv3 contributed anything at all, as opposed to the representation contributing everything.",
+    "dinov3_frozen": {
+      "backbone": "dinov3",
+      "trainable": false
+    },
+    "dinov3_finetuned": {
+      "backbone": "dinov3",
+      "trainable": true,
+      "learning_rate_multiplier": 0.1
+    },
+    "scratch_control": {
+      "backbone": "scratch",
+      "trainable": true
+    }
+  },
+  "backbone": {
+    "dinov3_weights_env": "DAT_DINOV3_WEIGHTS",
+    "timm_model_name": "vit_small_patch16_224",
+    "embedding_dimension": 384,
+    "offline_only": true,
+    "_offline_only": "No download is attempted. Weights must be present locally and are verified by digest before use, matching the Phase65A-R3 offline contract."
+  },
+  "training": {
+    "epochs": 30,
+    "batch_size": 16,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "warmup_fraction": 0.1,
+    "dropout": 0.1,
+    "gradient_clip": 5.0,
+    "amp": true,
+    "flip_tta": true,
+    "logit_clamp": 6.0
+  },
+  "seeds": {
+    "_purpose": "Three seeds per arm. The measured standard deviation is reported before any arm comparison is read, and the ship bar must exceed it.",
+    "values": [
+      683001,
+      683002,
+      683003
+    ]
+  },
+  "leave_one_cluster_out": {
+    "_purpose": "The read neither top-ten solution had. An in-distribution gain of roughly 0.007-0.010 from changing the training distribution is the known signature of fitting the acquisition mix harder, so a candidate must also survive being validated on an acquisition cluster it never trained on.",
+    "enabled": true,
+    "minimum_cluster_n": 30
+  },
+  "ship_bar": {
+    "_purpose": "DINOv3 must beat the scratch control ON THE SAME REPRESENTATION. Beating the old raw-volume baseline proves only that the projection works.",
+    "minimum_gain_over_scratch_control": 0.005,
+    "minimum_auroc_gain_over_scratch_control": 0.0,
+    "require_all_seeds_same_sign": true,
+    "maximum_cluster_log_loss_regret": 0.01,
+    "require_no_cluster_collapse": true,
+    "cluster_collapse_threshold": 0.04
+  },
+  "probability_clip": 1e-06,
+  "contract_file": "exp3_dinov3_projection_contract.json"
+}

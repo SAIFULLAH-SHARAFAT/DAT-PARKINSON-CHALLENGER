@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: verify and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install core dependencies
+        # CPU wheels: this job checks correctness, not throughput.
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy "torch>=2.4,<3" --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+
+      - name: Release verification
+        run: python scripts/verify_release.py
+
+      - name: Compile every source file
+        run: python -m compileall -q experiments datcore scripts archive
+
+      - name: Release verification, again
+        # Must still pass after compileall: build artefacts are excluded from the
+        # manifest walk, so the documented command order is repeatable.
+        run: python scripts/verify_release.py
+
+      - name: Experiment synthetic tests
+        run: |
+          python experiments/exp1_atypical_syndrome_structure/test_synthetic.py
+          python experiments/exp2_shift_robust_calibration_bracket/test_synthetic.py
+          python experiments/exp3_dinov3_projection_expert/test_synthetic.py
+
+      - name: Archived phase tests
+        # These need POSIX symlinks to reproduce the official runtime layout, so
+        # Linux is the only place they run in full.
+        run: |
+          python archive/phase_research/test_phase64_synthetic.py
+          python archive/phase_research/test_phase65b_static_contract.py
+          python archive/phase_research/test_phase67b_synthetic.py
+          python archive/phase_research/test_phase67c_synthetic.py
+
+      - name: Markdown code fences are balanced
+        run: |
+          python - <<'PY'
+          import pathlib, re, sys
+          bad = []
+          for p in sorted(pathlib.Path(".").rglob("*.md")):
+              n = sum(bool(re.match(r"^ {0,3}```", line))
+                      for line in p.read_text(encoding="utf-8").split("\n"))
+              if n % 2:
+                  bad.append(p.as_posix())
+          if bad:
+              sys.exit("unbalanced code fences: " + ", ".join(bad))
+          print("all markdown fences balanced")
+          PY

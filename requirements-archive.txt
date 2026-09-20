@@ -1,0 +1,7 @@
+# Only needed to import the archived Phase57-67 research under an interpreter.
+# The archive is history: it expects a hosted notebook environment and private
+# artefacts that are not distributed. See archive/README.md.
+-r requirements.txt
+scipy>=1.11,<2
+scikit-learn>=1.3,<2
+pandas>=2.0

@@ -1,4 +1,4 @@
-# DaT Parkinson’s Challenge — Project handoff, Phases 1–66
+# DaT Parkinson’s Challenge — Project handoff, Phases 1–67
 
 Updated 13 September 2026. Covers all experiments and engineering steps recoverable from the supplied history, with explicit gaps. This is a reconstruction from historical summaries, source code and sanitized reports, not a fresh reanalysis of private scans or predictions.
 
@@ -803,7 +803,7 @@ file bytes: 88,281,415
 tensor mapping: one dictionary level inside a wrapper
 tensors: 175 expected, 0 missing, 0 unexpected, 0 shape mismatches
 all finite: true
-+```
+```
 
 **Established cause:** the original loader required the tensor dictionary at the file root. The supplied checkpoint has a complete standard non-register ViT-S/14 schema one wrapper level below the root. This explains the original strict-load failure.
 
@@ -907,6 +907,38 @@ dinov2_vits14_lvd142m.pth
 
 The official raw weight filename `dinov2_vits14_pretrain.pth` is also recognized. The Phase33/39 files can use previously supported root-level alternatives. If artifacts are under read-only `/kaggle/input/...`, set the artifact root accordingly and keep the output root writable. Set the training-label root if discovery needs help. Phase65B/C/D models and prior live notebook objects are not required for Phase66.
 
+
+## Phase67 — unreviewed work in progress
+
+Phase67 is present in `experiments/` and in the manifest, but it has **not** been through the
+review the rest of this archive has. It is published so the record is complete, not because it is
+finished. Anyone reading a Phase67 contract should know the following before believing it.
+
+**What it contains.** A shared module, `phase67_common.py`, and five cells: 167A coverage and
+cache parity, 167B a nested multi-expert stack, 167C a multiseed domain-invariant expert, 167D
+shift-robust calibration, 167E adjudication. It is the first phase whose cells are not standalone.
+
+**Known defects, all still open.**
+
+1. `167A`'s cache-parity recomputation cannot run without an operator-supplied preprocessing
+   callable and NIfTI root. Until it does, every cache-trained candidate stays deployment-blocked,
+   and 167C and 167E both gate on that verdict.
+2. `167E`'s per-seed criterion compares the raw per-seed expert probabilities against the anchor,
+   while the candidate is the blend. The comparison is against the wrong quantity and cannot be
+   satisfied. The contract now reports the mismatch explicitly rather than emitting an unreachable
+   `False`; choosing the correct statistic is a research decision that has not been made.
+3. `167A` and `167D` have no tests at all. `167E` is only partially covered.
+
+**Repairs applied during the 20 September 2026 maintenance pass.** `167E`'s cache-parity block now
+fails closed rather than open when 167A has not run, and covers `phase67b`, which becomes
+cache-trained as soon as 167C's vector is folded into the stack. `167B` now surfaces which experts
+in an accepted stack are not deployment-eligible. `167A`'s documented callable contract now matches
+its call site.
+
+**Numbering.** There is no Phase67 result in the results table above; the Phase68R entry refers to
+output-only temperature scaling of the Phase56 anchor, which was carried out independently of the
+Phase67 code and does not depend on it.
+
 ## Boundaries and corrections for anyone taking over
 
 - Keep the Phase56 archive digest unchanged unless a separately validated candidate is explicitly being packaged. A stale Phase42 handoff is not its authoritative source.
@@ -922,6 +954,6 @@ The official raw weight filename `dinov2_vits14_pretrain.pth` is also recognized
 
 ## Source trail and verification limits
 
-This handoff uses the earlier Phase1–64 reconstruction; sanitized Phase65A-R/R2/R3/R4 outputs; the Phase65B, Phase65C and Phase65D reports; saved Phase57–66 source; `PHASE66_RESEARCH.md`; recorded synthetic implementation tests; and the final Phase66F report. The early phase-by-phase primary notebooks are not all available, hence the marked gaps.
+This handoff uses the earlier Phase1–64 reconstruction; the Phase67 sources as shipped; sanitized Phase65A-R/R2/R3/R4 outputs; the Phase65B, Phase65C and Phase65D reports; saved Phase57–67 source; `../archive/phase_research/PHASE66_RESEARCH.md`; recorded synthetic implementation tests; and the final Phase66F report. The early phase-by-phase primary notebooks are not all available, hence the marked gaps.
 
 No private challenge data were reanalyzed to create this document. The public release was checked using syntax compilation, synthetic tests and a denylist-based privacy scanner. Those checks do not reproduce private development scores; the metrics here are historical aggregate reports.

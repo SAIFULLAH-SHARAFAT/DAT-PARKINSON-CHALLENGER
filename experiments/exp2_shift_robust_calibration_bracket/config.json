@@ -1,0 +1,50 @@
+{
+  "experiment": "exp2_shift_robust_calibration_bracket",
+  "schema_version": "exp2-v1",
+
+  "_declared_before_results": "Every threshold below was written before the first run. Do not edit them after seeing an outcome; add a new config file instead.",
+
+  "slope_grid": {
+    "lower": 0.50,
+    "upper": 1.40,
+    "points": 181
+  },
+  "intercept_bounds": [-3.0, 3.0],
+
+  "probability_clip": 1e-6,
+
+  "minimum_cluster_n": 30,
+
+  "bootstrap": {
+    "replicates": 2000,
+    "seed": 682101,
+    "confidence": 0.95
+  },
+
+  "matched_null": {
+    "permutations": 1000,
+    "seed": 682102,
+    "_purpose": "Permute the cluster assignment while keeping cluster sizes fixed. If the spread of per-cluster optimal slopes is no larger than this null, the ladder is sampling noise and must not be shipped."
+  },
+
+  "ship_bar": {
+    "_purpose": "A bracket is only worth shipping if the ladder is real AND the flat arm's cost on the easy split is small relative to its modelled payoff on a shifted one.",
+    "minimum_slope_spread_over_null_sd": 3.0,
+    "maximum_in_distribution_log_loss_cost": 0.0015,
+    "require_monotone_slope_vs_distance": true
+  },
+
+  "bracket": {
+    "_purpose": "Slopes actually emitted for submission. Anchored on the out-of-fold optimum and flattened by the measured ladder, never a point estimate.",
+    "quantiles_of_extrapolated_slope": [0.5, 0.25, 0.1],
+    "minimum_members": 3
+  },
+
+  "distance_instrument": {
+    "_purpose": "board ~= baseline + coefficient * (1 - rho_cc), the only local instrument that predicted a public score to better than 0.001 in any published solution on this task.",
+    "coefficient": 0.452,
+    "report_only": true
+  },
+
+  "contract_file": "exp2_shift_robust_calibration_contract.json"
+}

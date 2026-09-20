@@ -1,0 +1,3 @@
+# The manifest pins the SHA-256 of every published file, so line endings must
+# never be rewritten by Git on checkout.
+* -text
