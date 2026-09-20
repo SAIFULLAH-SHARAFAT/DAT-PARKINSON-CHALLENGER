@@ -138,12 +138,29 @@ def check_stratum_is_fold_local():
     assert threshold_a == threshold_b, (threshold_a, threshold_b)
 
     # ... whereas a training case moving DOES change it, proving the test has teeth.
+    # Shift the training distribution rather than collapsing it to a constant: a
+    # constant would produce an empty stratum, which assign_strata now rejects
+    # outright, and the test would be measuring that guard instead of the split.
     tampered2 = {k: v.copy() for k, v in descriptors.items()}
     train_pathological = np.flatnonzero((labels > 0.5) & train_mask)
-    tampered2["asymmetry"][train_pathological] = 0.999
+    tampered2["asymmetry"][train_pathological] += 0.5
     _, threshold_c = exp1.assign_strata(tampered2, labels, train_mask, SMALL)
     assert threshold_c != threshold_a, "control failed: threshold ignores training cases too"
     print("  stratum: held-out cases cannot move the threshold; training cases can")
+
+
+def check_degenerate_split_is_rejected():
+    """A split that leaves a stratum empty must stop, not train a dead class."""
+    rng = np.random.default_rng(71)
+    _, labels, _ = build_population(rng)
+    flat = {"asymmetry": np.where(labels > 0.5, 0.42, rng.random(labels.size) * 0.3)}
+    try:
+        exp1.assign_strata(flat, labels, np.ones(labels.size, bool), SMALL)
+    except dat.DatStop as stop:
+        assert "has_only_0_training_cases" in str(stop), str(stop)
+        print(f"  degenerate split: rejected ({stop})")
+        return
+    raise AssertionError("a degenerate split with an empty stratum was accepted")
 
 
 def check_matched_null():
@@ -214,6 +231,7 @@ def main():
     check_descriptors()
     check_stratum_recovers_truth()
     check_stratum_is_fold_local()
+    check_degenerate_split_is_rejected()
     check_matched_null()
     check_decomposition_is_complete()
     check_gates_reject_a_null_result()

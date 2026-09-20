@@ -59,6 +59,11 @@ def apply_slope(logits, slope, intercept):
 
 
 def log_loss(labels, probability, clip):
+    labels = np.asarray(labels, dtype=np.float64)
+    if labels.size == 0:
+        # np.mean of an empty slice returns NaN with only a warning, and a NaN
+        # that reaches a gate silently disables it.
+        raise dat.DatStop("log_loss_on_an_empty_evaluation_set")
     p = np.clip(probability, clip, 1.0 - clip)
     return float(-np.mean(labels * np.log(p) + (1.0 - labels) * np.log(1.0 - p)))
 
@@ -157,12 +162,23 @@ def distance_from_training(logits, mask):
 
 def ladder(labels, logits, groups, config):
     """Per-cluster optimal slopes, each measured on a cluster held out entirely."""
-    rows = []
+    rows, skipped = [], []
     minimum_n = int(config["minimum_cluster_n"])
     for cluster in sorted(set(int(g) for g in groups)):
         mask = groups == cluster
         n = int(mask.sum())
         if n < minimum_n:
+            continue
+        # A single-class cluster has no calibration optimum: the fit runs to the
+        # boundary and contributes a meaningless slope to both the ladder and the
+        # null. Excluded and counted, never silently included.
+        if len(set(labels[mask].tolist())) < 2:
+            skipped.append({"cluster": int(cluster), "n": n, "reason": "single_class"})
+            continue
+        # The comparison slope is fitted on everything else, so there has to be an
+        # everything else. With one cluster this is empty.
+        if int((~mask).sum()) < minimum_n:
+            skipped.append({"cluster": int(cluster), "n": n, "reason": "remainder_too_small"})
             continue
         held = optimal_slope(labels[mask], logits[mask], config)
         # The slope a developer WOULD have shipped, fitted without this cluster.
@@ -183,7 +199,7 @@ def ladder(labels, logits, groups, config):
                 "distance_from_training": distance_from_training(logits, mask),
             }
         )
-    return rows
+    return rows, skipped
 
 
 def matched_null(labels, logits, groups, config):
@@ -194,7 +210,7 @@ def matched_null(labels, logits, groups, config):
     shipped. This is the control that separates a real ladder from sampling noise.
     """
     rng = np.random.default_rng(int(config["matched_null"]["seed"]))
-    observed = [row["held_out_optimal_slope"] for row in ladder(labels, logits, groups, config)]
+    observed = [row["held_out_optimal_slope"] for row in ladder(labels, logits, groups, config)[0]]
     if len(observed) < 2:
         return {"available": False}
     observed_sd = float(np.std(observed, ddof=1))
@@ -206,6 +222,7 @@ def matched_null(labels, logits, groups, config):
             optimal_slope(labels[shuffled == c], logits[shuffled == c], config)["slope"]
             for c in sorted(set(int(g) for g in shuffled))
             if int((shuffled == c).sum()) >= int(config["minimum_cluster_n"])
+            and len(set(labels[shuffled == c].tolist())) >= 2
         ]
         if len(slopes) >= 2:
             spreads.append(float(np.std(slopes, ddof=1)))
@@ -371,7 +388,7 @@ def analyse(labels, probability, groups, config):
 
     baseline = dat.metrics(labels, probability)
     in_distribution = optimal_slope(labels, logits, config)
-    rows = ladder(labels, logits, groups, config)
+    rows, skipped_clusters = ladder(labels, logits, groups, config)
     null = matched_null(labels, logits, groups, config)
     fit = extrapolate(rows, in_distribution["slope"])
     bracket = build_bracket(rows, in_distribution, fit, config)
@@ -418,6 +435,7 @@ def analyse(labels, probability, groups, config):
         "baseline_uncalibrated": baseline,
         "in_distribution_optimum": in_distribution,
         "per_cluster_ladder": rows,
+        "clusters_excluded_from_the_ladder": skipped_clusters,
         "matched_null": null,
         "distance_fit": fit,
         "bracket": bracket,

@@ -145,6 +145,21 @@ def assign_strata(descriptors, labels, train_mask, config):
     # Below the threshold the two sides are close: symmetric bilateral reduction.
     strata[pathological & (asymmetry <= threshold)] = 2
     strata[pathological & (asymmetry > threshold)] = 1
+
+    # `minimum_per_stratum` has to be enforced on the RESULT, not just on the
+    # input count. If the asymmetry index is degenerate -- every pathological
+    # case at the same value, say -- the quantile still returns a number and the
+    # split still "succeeds", but one stratum comes out empty. The auxiliary head
+    # then trains on a dead class and the gate reports on a hypothesis that was
+    # never actually tested. Fail loudly instead.
+    minimum = int(config["stratum"]["minimum_per_stratum"])
+    for index in (1, 2):
+        in_training = int(((strata == index) & train_mask).sum())
+        dat.require(
+            in_training >= minimum,
+            f"stratum_{config['stratum']['classes'][index]}_has_only_"
+            f"{in_training}_training_cases_minimum_is_{minimum}",
+        )
     return strata, threshold
 
 
