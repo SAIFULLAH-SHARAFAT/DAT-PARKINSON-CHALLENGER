@@ -10,8 +10,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "bytes": 2353,
-      "sha256": "7c1733f0fc3ffe88fd46f2aa82beda747ec475157e895131848be171a8a06125"
+      "bytes": 2928,
+      "sha256": "3f48051e9fce4aa8555fa88f70880dd3f7c9972d5cfb9392fe4196e5bf97576b"
     },
     {
       "path": ".gitignore",
@@ -30,8 +30,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 6938,
-      "sha256": "0bee023e4eebc75d83654a7aa01002c53557dd5f505966e775ed67ae453adc4c"
+      "bytes": 6142,
+      "sha256": "8de0b32f1917e196bc1fdd15ac393df63d0618bcdf12ab05e77da6fa9a16c858"
     },
     {
       "path": "archive/README.md",
@@ -305,8 +305,8 @@
     },
     {
       "path": "docs/RUNNING.md",
-      "bytes": 3912,
-      "sha256": "203babad95fd1e7ea540ceee75bdca1b0a0b258c91640cf1c2dd565c44d1b8fb"
+      "bytes": 4665,
+      "sha256": "d65eed74c3572de9a869fba4e9f5fbf6a68191bddfcc7c4dd2e6bc2566825bc8"
     },
     {
       "path": "experiments/exp1_atypical_syndrome_structure/README.md",
@@ -400,8 +400,8 @@
     },
     {
       "path": "scripts/verify_release.py",
-      "bytes": 7478,
-      "sha256": "cc639c6c113a5e1f7b8434d15a7144280f7bae3669d39177ab41c17fd9072060"
+      "bytes": 8742,
+      "sha256": "585a57e5499989d9a590d591ef4e5c2957783e03ae746cbd3f689f263ef9d933"
     }
   ]
 }

@@ -1,6 +1,7 @@
 """Fail closed when public-release privacy or integrity checks fail."""
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -133,9 +134,31 @@ def file_errors(files) -> list[str]:
     return errors
 
 
-def main() -> int:
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--privacy-only",
+        action="store_true",
+        help=(
+            "run the per-file privacy and hygiene checks and skip manifest "
+            "comparison. The manifest pins a published snapshot, so it is a "
+            "release check: editing a document should not fail an ordinary push, "
+            "but leaking a file always should."
+        ),
+    )
+    args = parser.parse_args(argv)
+
     files = public_files()
     errors = file_errors(files)
+
+    if args.privacy_only:
+        if errors:
+            print("PRIVACY VERIFICATION FAILED", file=sys.stderr)
+            for error in errors:
+                print(f"- {error}", file=sys.stderr)
+            return 1
+        print(f"PRIVACY VERIFICATION PASSED ({len(files)} files, manifest not compared)")
+        return 0
 
     if MANIFEST.is_file():
         try:
@@ -172,6 +195,14 @@ def main() -> int:
         print("PUBLIC RELEASE VERIFICATION FAILED", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
+        if any(error.startswith(("content differs", "file is present", "manifest lists"))
+               for error in errors):
+            print(
+                "\nThe manifest is stale. If those changes are intended, run:\n"
+                "    python scripts/update_manifest.py\n"
+                "It re-runs the privacy checks first and refuses to write if any fail.",
+                file=sys.stderr,
+            )
         return 1
     print(f"PUBLIC RELEASE VERIFICATION PASSED ({len(files)} files)")
     return 0

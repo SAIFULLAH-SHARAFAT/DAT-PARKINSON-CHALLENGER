@@ -77,15 +77,29 @@ python experiments/exp3_dinov3_projection_expert/test_synthetic.py
 ## Checking the repository itself
 
 ```bash
-python scripts/verify_release.py
+python scripts/verify_release.py --privacy-only   # forbidden files, secrets, paths
 python -m compileall -q experiments datcore scripts archive
-python scripts/verify_release.py
+python scripts/verify_release.py --privacy-only   # still passes: build artefacts are excluded
 ```
 
-The verifier passes both times: build artefacts are excluded from the walk, so the documented
-command order is repeatable. After any deliberate edit, regenerate the manifest with
-`python scripts/update_manifest.py`. It refuses to write if the privacy checks fail, so the manifest
-cannot be used to bless a leak.
+Two checks, deliberately separated:
+
+- **`--privacy-only`** is the gate with real value — forbidden filenames and suffixes, file size,
+  symlinks, UTF-8, secret and path patterns. CI runs it on every push.
+- **The full check** additionally compares every file against `PUBLIC_RELEASE_MANIFEST.json`. That
+  manifest pins a *published snapshot*, so it is a release check: CI runs it on version tags only.
+  Editing a document should not turn the badge red; leaking a file always should.
+
+```bash
+python scripts/verify_release.py        # full check, including the manifest
+python scripts/update_manifest.py       # regenerate after a deliberate edit
+```
+
+`update_manifest.py` re-runs the privacy checks first and refuses to write if any fail, so the
+manifest can never be used to bless a leak.
+
+If you edit a file through the GitHub web interface, the manifest goes stale. That is expected and
+harmless; regenerate it next time you are at a terminal.
 
 ## The archived research
 

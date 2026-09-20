@@ -98,7 +98,7 @@ pip install -r requirements.txt
 python experiments/exp2_shift_robust_calibration_bracket/test_synthetic.py
 
 # check the repository itself
-python scripts/verify_release.py
+python scripts/verify_release.py --privacy-only
 ```
 
 Full setup, inputs and flags: [`docs/RUNNING.md`](docs/RUNNING.md).
