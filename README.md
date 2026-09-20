@@ -5,7 +5,6 @@
 **Solution archive and follow-up research for the [DrivenData DaT Parkinson's Challenge](https://www.drivendata.org/competitions/311/dat-parkinsons-challenge/)**
 French Society of Nuclear Medicine · 2026 · 1,009 entrants
 
-[![CI](https://github.com/SAIFULLAH-SHARAFAT/DaT-Parkinson-Challenger/actions/workflows/ci.yml/badge.svg)](https://github.com/SAIFULLAH-SHARAFAT/DaT-Parkinson-Challenger/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 ![Log loss 0.3131](https://img.shields.io/badge/public%20log%20loss-0.3131-brightgreen)
@@ -44,11 +43,7 @@ The one change that moved the board was **output calibration** — no retraining
 
 Full numbers in [`docs/RESULTS.md`](docs/RESULTS.md).
 
-## The three experiments
-
-Each is a complete, runnable study with a declared ship bar, a measured seed-noise floor, a matched
-null, whole-group hold-out, a per-cluster transfer read, and a synthetic test that runs with **no
-data at all**.
+## Main experiments
 
 | | experiment | hypothesis | cost |
 |:--|:--|:--|:--|
@@ -56,14 +51,7 @@ data at all**.
 | 🥈 | [**exp1 — atypical syndrome structure**](experiments/exp1_atypical_syndrome_structure/) | the residual loss is a *syndrome* problem, not a severity problem | 6 fits, GPU |
 | 🥉 | [**exp3 — DINOv3 on a physical projection**](experiments/exp3_dinov3_projection_expert/) | a foundation model can contribute *if* fed physics rather than a raw volume | 9 fits, GPU |
 
-**Start with exp2.** It needs no GPU and no retraining, and calibration under distribution shift was
-worth more than every architectural change made by anyone in the top ten.
-
-Exp3 is the SOTA arm, built so it can lose conclusively: its mandatory `scratch_control` is a
-matched null on the identical input, so the bar is *DINOv3 minus that control* — not DINOv3 minus an
-old baseline.
-
-## What failed, and what it cost
+## What failed, and why:
 
 67 phases. Nothing was promoted after Phase56.
 
