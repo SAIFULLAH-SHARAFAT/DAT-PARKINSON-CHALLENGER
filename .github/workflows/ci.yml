@@ -25,6 +25,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install numpy "torch>=2.4,<3" --index-url https://download.pytorch.org/whl/cpu
           pip install -r requirements.txt
+          # The archived tests below import scipy and scikit-learn.
+          pip install -r requirements-archive.txt
+
+      - name: Dependency declaration check
+        # Runs before anything that needs a package: static, so it gives the same
+        # answer on a clean runner and on a machine that happens to have one
+        # installed. A missing declaration is how this job broke once already.
+        run: python scripts/check_dependencies.py
 
       - name: Privacy verification
         # The gate with real value, and it runs on every push: forbidden files

@@ -1,7 +1,12 @@
-# Only needed to import the archived Phase57-67 research under an interpreter.
-# The archive is history: it expects a hosted notebook environment and private
-# artefacts that are not distributed. See archive/README.md.
--r requirements.txt
+# Extra packages the archived Phase57-67 research imports, on top of
+# requirements.txt. Deliberately standalone rather than "-r requirements.txt":
+# re-resolving torch here would send pip to the default index and pull a CUDA
+# build over an already-installed CPU one.
+#
+#   pip install -r requirements.txt -r requirements-archive.txt
+#
+# The archive expects a hosted notebook environment and private artefacts that
+# are not distributed; install these only to read or run its synthetic tests.
 scipy>=1.11,<2
 scikit-learn>=1.3,<2
 pandas>=2.0

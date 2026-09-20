@@ -10,8 +10,8 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "bytes": 2928,
-      "sha256": "3f48051e9fce4aa8555fa88f70880dd3f7c9972d5cfb9392fe4196e5bf97576b"
+      "bytes": 3378,
+      "sha256": "38ebb98d1c212f931ab4d5ac456ef76f07bfb054a9bddd3e9c74d65c46450f66"
     },
     {
       "path": ".gitignore",
@@ -380,13 +380,18 @@
     },
     {
       "path": "requirements-archive.txt",
-      "bytes": 287,
-      "sha256": "44057404a33754c1fa01f0782756e6f9dd1793b57269e98715b0f0f8b6a4146b"
+      "bytes": 542,
+      "sha256": "5b9542c656c8263923ae3a1f0250abc403625a60885c4a6cd1091fb90a9854fe"
     },
     {
       "path": "requirements.txt",
       "bytes": 420,
       "sha256": "a9a8c9b9ba1d5748a2297b5583fdcc899fca967604d96bc8e6ed962a5c91524c"
+    },
+    {
+      "path": "scripts/check_dependencies.py",
+      "bytes": 6174,
+      "sha256": "9c17b06b42dc891fecb856cea8fbbc311b0eb7d9fe75b585d2f1603e15159dd9"
     },
     {
       "path": "scripts/release_common.py",
